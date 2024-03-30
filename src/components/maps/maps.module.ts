@@ -1,15 +1,17 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MapsComponent } from './maps.component';
+import { GoogleMapsModule } from '@angular/google-maps';
 
 
 
 @NgModule({
   declarations: [
-    MapsComponent
+    MapsComponent,
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    GoogleMapsModule
   ],
   exports: [
     MapsComponent
