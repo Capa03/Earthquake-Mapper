@@ -105,11 +105,7 @@ export class MapsComponent implements OnInit {
         }
       });
 
-      let color = 'black';
-      this.earthquakeData.features.forEach((feature) => {
-         color = this.getMagColor(feature.properties.mag);
 
-      });
 
       // circles
       this.map?.addLayer({
@@ -119,7 +115,16 @@ export class MapsComponent implements OnInit {
         'paint': {
           'circle-radius': 6,
           'circle-stroke-width': 2,
-          'circle-color': color,
+          'circle-color': [
+            'interpolate',
+            ['linear'],
+            ['get', 'mag'], // Use the 'mag' property to determine the color
+            0, '#00FF00', // Green for minor earthquakes
+            3, '#FFFF00', // Yellow for light earthquakes
+            5, '#FFA500', // Orange for moderate earthquakes
+            7, '#FF4500', // Red for strong earthquakes
+            9, '#8B0000'  // Dark red for severe earthquakes
+          ],
           'circle-stroke-color': 'white'
         }
       });
