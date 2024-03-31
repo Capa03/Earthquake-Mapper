@@ -71,21 +71,6 @@ export class MapsComponent implements OnInit {
     });
   }
 
-  getMagColor(mag: number): string {
-    if (mag < 1) {
-      return 'green';
-    } else if (mag < 2) {
-      return 'yellow';
-    } else if (mag < 3) {
-      return 'orange';
-    } else if (mag < 4) {
-      return 'red';
-    } else if (mag >= 4) {
-      return 'purple';
-    } else {
-      return 'black'; // Default color
-    }
-  }
 
   initializeMap() {
 
@@ -93,7 +78,7 @@ export class MapsComponent implements OnInit {
       accessToken: "pk.eyJ1IjoiY2FwYTAzIiwiYSI6ImNsdWV0NGt2ZjFpd20ycXBpZTFtbmVvdmoifQ.gBCyjJOc075PrMQ5NE4iKw",
       container: 'map',
       style: this.style,
-      zoom: 5,
+      zoom: 2,
       center: [this.lng, this.lat]
     });
 
