@@ -3,8 +3,7 @@ import { EarthquakeService } from './../../services/earthquake.service';
 import { AfterContentInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import * as mapboxgl from 'mapbox-gl';
 import { Earthquake } from '../../interface/EarthQuakeInterface';
-
-
+import { SlideService } from '../../services/slide.service';
 
 @Component({
   selector: 'app-maps',
@@ -12,8 +11,34 @@ import { Earthquake } from '../../interface/EarthQuakeInterface';
   styleUrls: ['./maps.component.scss']
 })
 export class MapsComponent implements OnInit {
+  checked: boolean = false;
+  constructor(private earthquakeService: EarthquakeService, private slideService: SlideService) {
+  }
+
+  get style() {
+    return this.checked ? 'mapbox://styles/mapbox/outdoors-v12':'mapbox://styles/mapbox/dark-v11' ;
+  }
+
+  ngOnInit(): void {
+    this.getEarthquakes();
+    this.getChecked();
+  }
+  getChecked(): boolean {
+    this.slideService.getChecked().subscribe((checked) => {
+      this.checked = checked;
+      this.updateMapStyle();
+    });
+    return this.checked;
+  }
+
+  updateMapStyle() {
+    if (this.map) {
+      this.map.setStyle(this.style);
+      this.initializeMap();
+    }
+  }
+
   map: mapboxgl.Map | undefined;
-  style = 'mapbox://styles/mapbox/outdoors-v12';
   lat: number = 37.9966083;
   lng: number = -7.8527005;
   earthquakeData: Earthquake = {
@@ -21,14 +46,6 @@ export class MapsComponent implements OnInit {
     features: [],
   };
 
-
-
-  constructor(private earthquakeService: EarthquakeService) {
-  }
-
-  ngOnInit(): void {
-    this.getEarthquakes();
-  }
 
   getEarthquakes() {
     this.earthquakeService.getEarthquakes().subscribe((data) => {

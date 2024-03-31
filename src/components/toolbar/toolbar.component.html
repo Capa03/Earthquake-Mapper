@@ -1,4 +1,11 @@
-<mat-toolbar color="primary">
-  <mat-icon svgIcon='globe'></mat-icon>
-  <span class="title">{{title}}</span>
+<mat-toolbar
+  ><div>
+    <span class="title">{{ title }}</span>
+    <mat-icon svgIcon="globe"></mat-icon>
+  </div>
+  <div class="slide">
+    <mat-icon>light_mode</mat-icon>
+    <mat-slide-toggle (change)="onToggleChange($event)" ></mat-slide-toggle>
+    <mat-icon>dark_mode</mat-icon>
+  </div>
 </mat-toolbar>

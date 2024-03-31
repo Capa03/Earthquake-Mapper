@@ -4,8 +4,8 @@
   align-items: start;
   gap: 10px;
 }
-h2 {
-  font-family: 'Roboto', sans-serif;
+h2, span {
+  font-family: "Open Sans", sans-serif;
   color: white;
 }
 
@@ -17,8 +17,8 @@ h2 {
 }
 
 .point {
-  width: 20px;
-  height: 20px;
+  width: 10px;
+  height: 10px;
   border-radius: 50%;
   border: 2px solid white;
 }

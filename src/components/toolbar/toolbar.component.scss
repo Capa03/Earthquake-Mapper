@@ -1,3 +1,19 @@
 .title{
   padding-left: 0.5rem;
+  color: white;
+}
+
+mat-toolbar{
+  background-color: #2b2b2b;
+  display: flex;
+  justify-content: space-between;
+}
+mat-icon{
+  color: white;
+}
+
+.slide{
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
+import { SlideService } from '../../services/slide.service';
 
 @Component({
   selector: 'app-toolbar',
@@ -9,7 +10,9 @@ import { DomSanitizer } from '@angular/platform-browser';
 })
 export class ToolbarComponent implements OnInit {
   title: string = 'EarthQuake Mapper App';
-  constructor(private matIconRegistry: MatIconRegistry, private domSanitizer: DomSanitizer) {
+  checked: boolean = false;
+
+  constructor(private matIconRegistry: MatIconRegistry, private domSanitizer: DomSanitizer, private slideService: SlideService) {
     this.matIconRegistry.addSvgIcon(
       'globe',
       this.domSanitizer.bypassSecurityTrustResourceUrl('../../assets/globe.svg')
@@ -17,6 +20,12 @@ export class ToolbarComponent implements OnInit {
   }
 
   ngOnInit() {
+    console.log(this.checked);
+  }
+
+  onToggleChange(event: any) {
+    this.checked = !event.checked;
+    this.slideService.setChecked(this.checked);
   }
 
 }

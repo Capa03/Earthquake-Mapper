@@ -4,7 +4,7 @@ import { ToolbarComponent } from './toolbar.component';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { HttpClientModule } from '@angular/common/http';
-
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 
 @NgModule({
   declarations: [
@@ -14,7 +14,8 @@ import { HttpClientModule } from '@angular/common/http';
     CommonModule,
     MatToolbarModule,
     MatIconModule,
-    HttpClientModule
+    HttpClientModule,
+    MatSlideToggleModule
   ],
   exports: [ToolbarComponent]
 })
