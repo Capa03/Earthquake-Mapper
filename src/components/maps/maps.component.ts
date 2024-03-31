@@ -20,10 +20,15 @@ export class MapsComponent implements OnInit {
     type: 'FeatureCollection',
     features: [],
   };
+
+
+
   constructor(private earthquakeService: EarthquakeService) {
-    this.getEarthquakes();
   }
 
+  ngOnInit(): void {
+    this.getEarthquakes();
+  }
 
   getEarthquakes() {
     this.earthquakeService.getEarthquakes().subscribe((data) => {
@@ -49,9 +54,20 @@ export class MapsComponent implements OnInit {
     });
   }
 
-
-  ngOnInit(): void {
-
+  getMagColor(mag: number): string {
+    if (mag < 1) {
+      return 'green';
+    } else if (mag < 2) {
+      return 'yellow';
+    } else if (mag < 3) {
+      return 'orange';
+    } else if (mag < 4) {
+      return 'red';
+    } else if (mag >= 4) {
+      return 'purple';
+    } else {
+      return 'black'; // Default color
+    }
   }
 
   initializeMap() {
@@ -77,6 +93,8 @@ export class MapsComponent implements OnInit {
                 coordinates: feature.geometry.coordinates
               },
               properties: {
+                description: feature.properties.title,
+                place: feature.properties.place,
                 details: feature.properties.detail,
                 ...feature.properties,
                 city: feature.properties.place,
@@ -87,6 +105,12 @@ export class MapsComponent implements OnInit {
         }
       });
 
+      let color = 'black';
+      this.earthquakeData.features.forEach((feature) => {
+         color = this.getMagColor(feature.properties.mag);
+
+      });
+
       // circles
       this.map?.addLayer({
         'id': 'earthquakes-layer',
@@ -95,46 +119,45 @@ export class MapsComponent implements OnInit {
         'paint': {
           'circle-radius': 6,
           'circle-stroke-width': 2,
-          'circle-color': 'red',
+          'circle-color': color,
           'circle-stroke-color': 'white'
         }
       });
 
-      let popup = new mapboxgl.Popup({
+      const popup = new mapboxgl.Popup({
         closeButton: false,
-        closeOnClick: false
+        closeOnClick: false,
+        focusAfterOpen: true
       });
 
-      this.map?.on('mousemove', 'earthquakes-layer', (e) => {
-        if (e.features && e.features.length > 0) {
-          var feature = e.features[0];
-          if (feature.geometry && feature.geometry.type === 'Point' && feature.properties) {
-            const coordinates = (feature.geometry as GeoJSON.Point).coordinates.slice();
-            const description = feature.properties['title'] || ''; // Use bracket notation here
+      this.map?.on('mouseenter', 'earthquakes-layer', (e) => {
+        if (this.map) {
+          this.map.getCanvas().style.cursor = 'pointer';
 
-            // Handle longitude wrapping (optional)
-            coordinates[0] = (coordinates[0] + 540) % 360 - 180;  // More concise approach
+          if (e.features) {
+            var feature = e.features[0];
+            if (feature.geometry && feature.geometry.type === 'Point' && feature.properties) {
+              const coordinates = (feature.geometry as GeoJSON.Point).coordinates.slice();
+              const description = feature.properties['title'] || '';
 
-            // Update popup content and add it to the map
-            if (this.map) {
-              console.log(description);
-
-              popup.setLngLat(coordinates as [number, number])
-
+              while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+                coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+              }
+              popup.setLngLat(coordinates as mapboxgl.LngLatLike)
                 .setHTML(description)
                 .addTo(this.map);
+              console.log('popup', popup.isOpen());
+
             }
           }
-          if (this.map) {
-            this.map.getCanvas().style.cursor = (e.features && e.features.length > 0) ? 'pointer' : '';
-          }
-        }});
+        }
+      });
 
       this.map?.on('mouseleave', 'earthquakes-layer', () => {
-        popup.remove();
-        if (this.map){
+        if (this.map) {
           this.map.getCanvas().style.cursor = '';
         }
+        popup.remove();
       });
     });
   }
