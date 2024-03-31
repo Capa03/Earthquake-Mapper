@@ -13,9 +13,9 @@ import { Earthquake } from '../../interface/EarthQuakeInterface';
 })
 export class MapsComponent implements OnInit,AfterContentInit {
   map: mapboxgl.Map | undefined;
-  style = 'mapbox://styles/mapbox/streets-v11';
-  lat: number = 30.2672;
-  lng: number = -97.7431;
+  style = 'mapbox://styles/mapbox/outdoors-v12';
+  lat: number = 37.9966083;
+  lng: number = -7.8527005;
   earthquakeData: Earthquake = {
     type: 'FeatureCollection',
     features: [],
@@ -58,7 +58,7 @@ export class MapsComponent implements OnInit,AfterContentInit {
       accessToken: "pk.eyJ1IjoiY2FwYTAzIiwiYSI6ImNsdWV0NGt2ZjFpd20ycXBpZTFtbmVvdmoifQ.gBCyjJOc075PrMQ5NE4iKw",
       container: 'map',
       style: this.style,
-      zoom: 3,
+      zoom: 11,
       center: [this.lng, this.lat]
     });
 
