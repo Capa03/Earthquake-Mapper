@@ -5,6 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { MapsModule } from '../components/maps/maps.module';
 import { ToolbarModule } from '../components/toolbar/toolbar.module';
+import { SidebarModule } from '../components/sidebar/sidebar.module';
 
 @NgModule({
   declarations: [
@@ -13,8 +14,8 @@ import { ToolbarModule } from '../components/toolbar/toolbar.module';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    MapsModule,
-    ToolbarModule
+    ToolbarModule,
+    SidebarModule
   ],
   providers: [],
   bootstrap: [AppComponent]
