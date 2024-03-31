@@ -4,12 +4,14 @@ import { MapsComponent } from './maps.component';
 
 
 
+
 @NgModule({
   declarations: [
-    MapsComponent
+    MapsComponent,
   ],
   imports: [
-    CommonModule
+    CommonModule,
+
   ],
   exports: [
     MapsComponent
