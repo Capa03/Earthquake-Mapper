@@ -1,7 +1,9 @@
+import { EarthquakeFeature } from './../../interface/EarthQuakeInterface';
 import { EarthquakeService } from './../../services/earthquake.service';
 import { AfterContentInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import * as mapboxgl from 'mapbox-gl';
 import { Earthquake } from '../../interface/EarthQuakeInterface';
+
 
 
 @Component({
@@ -14,7 +16,10 @@ export class MapsComponent implements OnInit,AfterContentInit {
   style = 'mapbox://styles/mapbox/streets-v11';
   lat: number = 30.2672;
   lng: number = -97.7431;
-  earthquakeData: any = {};
+  earthquakeData: Earthquake = {
+    type: 'FeatureCollection',
+    features: [],
+  };
   constructor(private earthquakeService:EarthquakeService) {
     this.getEarthquakes();
    }
@@ -32,10 +37,9 @@ export class MapsComponent implements OnInit,AfterContentInit {
               coordinates: [feature.geometry.coordinates[0], feature.geometry.coordinates[1], feature.geometry.coordinates[2]]
             },
             properties: {
-              mag: feature.properties.mag,
-              title: feature.properties.title,
+              ...feature.properties,
               city: feature.properties.place,
-              time: new Date(feature.properties.time)
+              time: new Date(feature.properties.time).getTime()
             }
           };
         })
@@ -50,8 +54,6 @@ export class MapsComponent implements OnInit,AfterContentInit {
 
   ngAfterContentInit() {
 
-    console.log('Bla',this.earthquakeData);
-
     this.map = new mapboxgl.Map({
       accessToken: "pk.eyJ1IjoiY2FwYTAzIiwiYSI6ImNsdWV0NGt2ZjFpd20ycXBpZTFtbmVvdmoifQ.gBCyjJOc075PrMQ5NE4iKw",
       container: 'map',
@@ -63,9 +65,10 @@ export class MapsComponent implements OnInit,AfterContentInit {
     this.map.on('load', () => {
       this.map?.addSource('earthquakes', {
         type: 'geojson',
-        // Use a URL for the value for the `data` property.
+
         data: this.earthquakeData,
       });
+
       // circles
       this.map?.addLayer({
         'id': 'earthquakes-layer',
