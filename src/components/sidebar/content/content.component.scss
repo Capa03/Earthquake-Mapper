@@ -16,6 +16,18 @@ h2, span {
   font-family: 'Roboto', sans-serif;
 }
 
+
+
+.form-container {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+mat-hint{
+  color: white;
+}
+
 .point {
   width: 10px;
   height: 10px;
